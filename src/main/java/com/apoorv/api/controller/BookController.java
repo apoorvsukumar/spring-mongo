@@ -17,8 +17,8 @@ import com.apoorv.api.model.ClaimForm;
 import com.apoorv.api.model.User;
 import com.apoorv.api.repository.ClaimRepository;
 
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
-@CrossOrigin("http://localhost:4200")
 public class BookController {
 	
 	
