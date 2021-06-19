@@ -3,8 +3,15 @@ package com.apoorv.api.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("collection=Registration")
+@Document("collection=registration")
 public class Registration {
+
+	@Override
+	public String toString() {
+		return "Registration [id=" + id + ", name=" + name + ", address=" + address + ", country=" + country
+				+ ", state=" + state + ", email=" + email + ", password=" + password + ", pan=" + pan + ", contactNo="
+				+ contactNo + ", dob=" + dob + "]";
+	}
 
 	@Id
 	private String id;
@@ -20,10 +27,6 @@ public class Registration {
 
 	public String getId() {
 		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {
