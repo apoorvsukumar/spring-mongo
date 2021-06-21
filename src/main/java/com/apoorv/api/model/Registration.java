@@ -1,9 +1,10 @@
 package com.apoorv.api.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("collection=registration")
+@Document(collection="registration")
 public class Registration {
 
 	@Override
@@ -19,11 +20,19 @@ public class Registration {
 	private String address;
 	private String country;
 	private String state;
+	
+	@Indexed(unique = true)
 	private String email;
+	
 	private String password;
 	private String pan;
 	private String contactNo;
 	private String dob;
+	private String oldEmail;
+
+	public String getOldEmail() {
+		return oldEmail;
+	}
 
 	public String getId() {
 		return id;

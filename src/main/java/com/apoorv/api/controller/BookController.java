@@ -16,18 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 import com.apoorv.api.model.ClaimForm;
 import com.apoorv.api.model.User;
 import com.apoorv.api.repository.ClaimRepository;
+import com.apoorv.api.service.ClaimService;
+import com.apoorv.api.service.NextSequenceService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 public class BookController {
 	
+	@Autowired
+	private ClaimService claimService;
 	
 	@Autowired
 	private ClaimRepository claimRepository;
 	
+	@Autowired
+	private NextSequenceService nextSequenceService;
+	
 	@PostMapping("/addClaim")
 	public ClaimForm saveClaim(@RequestBody ClaimForm claimForm) {
+		claimForm.setId(nextSequenceService.getNextSequence("customSequences"));
 		ClaimForm c = claimRepository.save(claimForm);
+		System.out.println("Saving claim with amount : "+claimForm.getBillAmount());
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
@@ -45,31 +54,26 @@ public class BookController {
 	
 	@DeleteMapping("/deleteClaim/{id}")
 	public List<ClaimForm> deleteClaim(@PathVariable String id) {
-		claimRepository.deleteById(id);
+		claimRepository.deleteById(Integer.parseInt(id));
 		return getAllClaim();
 	}
 	
 	@PostMapping("/fetchClaimById")
 	public Optional<ClaimForm> fetchClaimById(@RequestBody String id) {
 		System.out.println("came here");
-		return claimRepository.findById(id);
+		return claimRepository.findById(Integer.parseInt(id));
 	}
 	
 	@PostMapping("/updateClaimById")
-	public String updateClaimById(@RequestBody ClaimForm updatableForm) {
+	public ClaimForm updateClaimById(@RequestBody ClaimForm updatableForm) {
 		System.out.println("Updating...");
-		Optional<ClaimForm> c = claimRepository.findById(updatableForm.getId());
-		if (c.isPresent()) {
-			ClaimForm existingForm = c.get();
-			existingForm.setFirstName(updatableForm.getFirstName());
-			existingForm.setLastName(updatableForm.getLastName());
-			existingForm.setAdmissionDate(updatableForm.getAdmissionDate());
-			existingForm.setDependentType(updatableForm.getDependentType());
-			existingForm.setDischargeDate(updatableForm.getDischargeDate());
-			existingForm.setDob(updatableForm.getDob());
-			existingForm.setProviderName(updatableForm.getProviderName());
-			existingForm = claimRepository.save(existingForm);
-			System.out.println(existingForm.getProviderName());
+		ClaimForm form = null;
+		try {
+			form = claimService.updateClaimFormById(updatableForm.getId(), updatableForm);
+			
+		} catch (Exception e) {
+			System.out.println(e);
+			e.printStackTrace();
 		}
 		try {
 			Thread.sleep(5000);
@@ -77,7 +81,7 @@ public class BookController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "Claim updated successfully";
+		return form;
 	}
 	
 	@RequestMapping("/validateLogin")

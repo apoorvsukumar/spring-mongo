@@ -23,6 +23,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserService userService;
 	
+	
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors().and().csrf().disable().authorizeRequests().
+		antMatchers(HttpMethod.OPTIONS, "*").permitAll().and().authorizeRequests().
+		antMatchers("/saveRegistration").permitAll().and().authorizeRequests().
+		anyRequest().authenticated().and().httpBasic();
+	}
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService);
@@ -36,12 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected AuthenticationManager authenticationManager() throws Exception {
 		return super.authenticationManager();
-	}
-	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "*").permitAll()
-				.antMatchers("/saveRegistration").permitAll().anyRequest().authenticated().and().httpBasic();
 	}
 
 //	@Autowired
