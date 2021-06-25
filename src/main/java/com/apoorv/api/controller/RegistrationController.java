@@ -3,21 +3,16 @@ package com.apoorv.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apoorv.api.model.Registration;
-import com.apoorv.api.repository.RegistrationRepository;
 import com.apoorv.api.service.RegistrationService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 public class RegistrationController {
-	
-	@Autowired
-	private RegistrationRepository regRepo;
 	
 	@Autowired
 	private RegistrationService regService;
@@ -30,7 +25,7 @@ public class RegistrationController {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String hashedPassword = passwordEncoder.encode(reg.getPassword());
 			reg.setPassword(hashedPassword);
-			return regRepo.save(reg);
+			return regService.saveRegistration(reg);
 		}
 		System.out.println("Email exists.");
 		return null;

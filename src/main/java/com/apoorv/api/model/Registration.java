@@ -6,6 +6,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="registration")
 public class Registration {
+	
+	public Registration() {}
+
+	public Registration(String id, String name, String address, String country, String state, String email,
+			String password, String pan, String contactNo, String dob, String oldEmail) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.country = country;
+		this.state = state;
+		this.email = email;
+		this.password = password;
+		this.pan = pan;
+		this.contactNo = contactNo;
+		this.dob = dob;
+		this.oldEmail = oldEmail;
+	}
 
 	@Override
 	public String toString() {

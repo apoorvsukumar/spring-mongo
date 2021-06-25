@@ -1,5 +1,6 @@
 package com.apoorv.api.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,22 @@ import com.apoorv.api.repository.ClaimRepository;
 public class ClaimService {
 	@Autowired
 	private ClaimRepository claimRepository;
+	
+	public ClaimForm saveClaim(ClaimForm form) {
+		return claimRepository.save(form);
+	}
+	
+	public List<ClaimForm> getAllClaim() {
+		return claimRepository.findAll();
+	}
+	
+	public void deleteClaimById(String id) {
+		claimRepository.deleteById(Integer.parseInt(id));
+	}
+	
+	public Optional<ClaimForm> fetchClaimById(String id) {
+		return claimRepository.findById(Integer.parseInt(id));
+	}
 	
 	public ClaimForm updateClaimFormById(int id, ClaimForm form) {
 		Optional<ClaimForm> d = claimRepository.findById(id);

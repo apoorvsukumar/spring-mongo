@@ -88,6 +88,22 @@ public class ClaimForm {
 		return dependentType;
 	}
 
+	public ClaimForm() {}
+
+	public ClaimForm(int id, String firstName, String lastName, String dob, String dischargeDate, String admissionDate,
+			String providerName, int billAmount, String dependentType) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dob = dob;
+		this.dischargeDate = dischargeDate;
+		this.admissionDate = admissionDate;
+		this.providerName = providerName;
+		this.billAmount = billAmount;
+		this.dependentType = dependentType;
+	}
+
 	public void setDependentType(String dependentType) {
 		this.dependentType = dependentType;
 	}

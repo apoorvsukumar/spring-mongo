@@ -21,7 +21,7 @@ import com.apoorv.api.service.NextSequenceService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
-public class BookController {
+public class ClaimController {
 	
 	@Autowired
 	private ClaimService claimService;
@@ -35,33 +35,24 @@ public class BookController {
 	@PostMapping("/addClaim")
 	public ClaimForm saveClaim(@RequestBody ClaimForm claimForm) {
 		claimForm.setId(nextSequenceService.getNextSequence("customSequences"));
-		ClaimForm c = claimRepository.save(claimForm);
-		System.out.println("Saving claim with amount : "+claimForm.getBillAmount());
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(c.getFirstName());
+		ClaimForm c = claimService.saveClaim(claimForm);
 		return c;
 	}
 	
 	@GetMapping("/findAllClaims")
 	public List<ClaimForm> getAllClaim() {
-		return claimRepository.findAll();
+		return claimService.getAllClaim();
 	}
 	
 	@DeleteMapping("/deleteClaim/{id}")
 	public List<ClaimForm> deleteClaim(@PathVariable String id) {
-		claimRepository.deleteById(Integer.parseInt(id));
+		claimService.deleteClaimById(id);
 		return getAllClaim();
 	}
 	
 	@PostMapping("/fetchClaimById")
-	public Optional<ClaimForm> fetchClaimById(@RequestBody String id) {
-		System.out.println("came here");
-		return claimRepository.findById(Integer.parseInt(id));
+	public ClaimForm fetchClaimById(@RequestBody String id) {
+		return claimService.fetchClaimById(id).get();
 	}
 	
 	@PostMapping("/updateClaimById")
